@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: rentr
+  # Localhost database, using docker
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/rentr
+    username: root
+    password: password
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true

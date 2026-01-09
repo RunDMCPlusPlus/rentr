@@ -1,0 +1,289 @@
+databaseChangeLog:
+
+- preConditions:
+  - onFail: HALT
+  - dbms:
+      type: postgresql
+
+- changeSet:
+    id: create_age_category_table
+    author: rentr
+    changes:
+    - createTable:
+        tableName: age_category
+        columns:
+        - column:
+            name: database_id
+            type: BIGINT
+            constraints:
+              primaryKey: true
+              nullable: false
+              primaryKeyName: age_category_pkey
+        - column:
+            name: id
+            type: VARCHAR(255)
+            constraints:
+              nullable: false
+              unique: true
+        - column:
+            name: name
+            type: VARCHAR(255)
+            constraints:
+              nullable: false
+        - column:
+            name: min_age
+            type: INTEGER
+            constraints:
+              nullable: false
+        - column:
+            name: max_age
+            type: INTEGER
+            constraints:
+              nullable: false
+
+- changeSet:
+    id: create_age_category_database_id_seq
+    author: rentr
+    changes:
+    - createSequence:
+        sequenceName: age_category_database_id_seq
+        dataType: BIGINT
+        startValue: 1
+        incrementBy: 1
+        minValue: 1
+        maxValue: 9223372036854775807
+        cacheSize: 1
+        cycle: false
+
+- changeSet:
+    id: create_cart_table
+    author: rentr
+    changes:
+    - createTable:
+        tableName: cart
+        columns:
+        - column:
+            name: database_id
+            type: BIGINT
+            constraints:
+              primaryKey: true
+              nullable: false
+              primaryKeyName: cart_pkey
+        - column:
+            name: id
+            type: VARCHAR(255)
+            constraints:
+              nullable: false
+              unique: true
+        - column:
+            name: last_updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+
+- changeSet:
+    id: create_cart_database_id_seq
+    author: rentr
+    changes:
+    - createSequence:
+        sequenceName: cart_database_id_seq
+        dataType: BIGINT
+        startValue: 1
+        incrementBy: 1
+        minValue: 1
+        maxValue: 9223372036854775807
+        cacheSize: 1
+        cycle: false
+
+- changeSet:
+    id: create_cart_item_table
+    author: rentr
+    changes:
+    - createTable:
+        tableName: cart_item
+        columns:
+        - column: 
+            name: database_id
+            type: BIGINT
+            constraints:
+              primaryKey: true
+              nullable: false
+              primaryKeyName: cart_item_pkey
+        - column:
+            name: cart_database_id
+            type: BIGINT
+            constraints:
+              nullable: false
+        - column:
+            name: equipment_item_database_id
+            type: BIGINT
+            constraints:
+              nullable: false
+        - column:
+            name: quantity
+            type: INTEGER
+            constraints:
+              nullable: false
+        - column:
+            name: discount_percentage
+            type: NUMERIC(5,2)
+            constraints:
+              nullable: true
+
+- changeSet:
+    id: create_cart_item_database_id_seq
+    author: rentr
+    changes:
+    - createSequence:
+        sequenceName: cart_item_database_id_seq
+        dataType: BIGINT
+        startValue: 1
+        incrementBy: 1
+        minValue: 1
+        maxValue: 9223372036854775807
+        cacheSize: 1
+        cycle: false
+
+- changeSet:
+    id: create_equipment_item_table
+    author: rentr
+    changes:
+    - createTable:
+        tableName: equipment_item
+        columns:
+        - column:
+            name: database_id
+            type: BIGINT
+            constraints:
+              primaryKey: true
+              nullable: false
+              primaryKeyName: equipment_item_pkey
+        - column:
+            name: id
+            type: VARCHAR(255)
+            constraints:
+              nullable: false
+              unique: true
+        - column:
+            name: age_category_database_id
+            type: BIGINT
+            constraints:
+              nullable: false
+        - column:
+            name: equipment_type_database_id
+            type: BIGINT
+            constraints:
+              nullable: false
+        - column:
+            name: price_per_day
+            type: NUMERIC(10,2)
+            constraints:
+              nullable: false
+
+- changeSet:
+    id: create_equipment_item_database_id_seq
+    author: rentr
+    changes:
+    - createSequence:
+        sequenceName: equipment_item_database_id_seq
+        dataType: BIGINT
+        startValue: 1
+        incrementBy: 1
+        minValue: 1      
+        maxValue: 9223372036854775807
+        cacheSize: 1
+        cycle: false
+
+- changeSet:
+    id: create_equipment_type_table
+    author: rentr
+    changes:
+    - createTable:
+        tableName: equipment_type
+        columns:
+        - column:
+            name: database_id
+            type: BIGINT
+            constraints:
+              primaryKey: true
+              nullable: false
+              primaryKeyName: equipment_type_pkey
+        - column:
+            name: id
+            type: VARCHAR(255)
+            constraints:
+              nullable: false
+        - column:
+            name: name
+            type: VARCHAR(255)
+            constraints:
+              nullable: false
+
+- changeSet:
+    id: create_equipment_type_database_id_seq
+    author: rentr
+    changes:
+    - createSequence:
+        sequenceName: equipment_type_database_id_seq
+        dataType: BIGINT
+        startValue: 1
+        incrementBy: 1
+        minValue: 1
+        maxValue: 9223372036854775807
+        cacheSize: 1
+        cycle: false
+
+- changeSet:
+    id: add_fk_cart_item_cart
+    author: rentr
+    changes:
+    - addForeignKeyConstraint:
+        baseTableName: cart_item
+        baseColumnNames: cart_database_id
+        constraintName: fk_cart_item_cart
+        referencedTableName: cart
+        referencedColumnNames: database_id
+
+- changeSet:
+    id: add_fk_cart_item_equipment_item
+    author: rentr
+    changes:
+    - addForeignKeyConstraint:
+        baseTableName: cart_item
+        baseColumnNames: equipment_item_database_id
+        constraintName: fk_cart_item_equipment_item
+        referencedTableName: equipment_item
+        referencedColumnNames: database_id
+
+- changeSet:
+    id: add_fk_equipment_item_age_category
+    author: rentr
+    changes:
+    - addForeignKeyConstraint:
+        baseTableName: equipment_item
+        baseColumnNames: age_category_database_id
+        constraintName: fk_equipment_item_age_category
+        referencedTableName: age_category
+        referencedColumnNames: database_id
+
+- changeSet:
+    id: add_fk_equipment_item_equipment_type
+    author: rentr
+    changes:
+    - addForeignKeyConstraint:
+        baseTableName: equipment_item
+        baseColumnNames: equipment_type_database_id
+        constraintName: fk_equipment_item_equipment_type
+        referencedTableName: equipment_type
+        referencedColumnNames: database_id  
+
+- changeSet:
+    id: add_unique_constraint_equipment_item_equipment_type_age_category
+    author: rentr
+    changes:
+    - addUniqueConstraint:
+        tableName: equipment_item
+        columnNames: equipment_type_database_id, age_category_database_id
+        constraintName: uq_equipment_item_equipment_type_age_category
+        
+
+- include:
+    file: db/changelog/db.changelog-testdata.yaml
