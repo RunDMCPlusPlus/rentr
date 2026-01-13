@@ -1,6 +1,6 @@
 # Rentr
 
-
+Rentr is a rental management application built using Java and the Spring Boot framework.
 
 ## Table of Contents
 
@@ -8,6 +8,7 @@
 - [Building from Source](#building-from-source)
 - [Running the Application](#running-the-application)
 - [Design Overview](#design-overview)
+- [Testing](#testing)
 
 ## Requirements
 
@@ -59,5 +60,11 @@ This application is built using the Spring Boot framework, which provides a robu
 
 ## Testing
 
+The project contains a test script located in the `tools` directory to help you run integration tests against the application.
+To run the test script, use the following command in the tools directory:
+```bash
+./test_it.sh
+```
 
+This script will execute a series of integration tests to verify the functionality of the application. Make sure the application is running before executing the test script.
 
